@@ -10,29 +10,29 @@ h2. How it works
 
 h3. Create an instance of the Fruitfly class
 
-bc. puts "var dynamicAssets : Fruitfly = new Fruitfly( "assets1" );"
+bc. "var dynamicAssets : Fruitfly = new Fruitfly( "assets1" );"
 
 The Fruitfly class takes a single parameter which is this instance's name. The name will be used when saving the Starling assets locally and reloading them so should be unique amongst all your Fruitfly instances.
 
 h3. Attempt to load the assets from the local storage
 
-bc. puts "dynamicAssets.loadComplete.add( assets1Ready );"
-puts "dynamicAssets.loadFailed.add( createAssets1 );"
-puts "dynamicAssets.loadFromCache();"
+bc. "dynamicAssets.loadComplete.add( assets1Ready );"
+"dynamicAssets.loadFailed.add( createAssets1 );"
+"dynamicAssets.loadFromCache();"
 
 h3. If the load fails, load the Fruitfly up with the original Flash assets
 
-bc. puts "private function createAssets1() : void"
-puts "{"
-puts "    dynamicAssets.addDisplayObject( "background", new Scene1Background(), 1 );"
-puts "    dynamicAssets.addMovieClip( "logo", new AnimatedLogo(), 1 );"
-puts "    // ..."
+bc. "private function createAssets1() : void"
+"{"
+"    dynamicAssets.addDisplayObject( "background", new Scene1Background(), 1 );"
+"    dynamicAssets.addMovieClip( "logo", new AnimatedLogo(), 1 );"
+"    // ..."
 
 You can add as many Flash assets as you wish. The corresponding Starling assets will be retrieved by the names specified here. The last parameter is a scale to apply to the Flash asset when creating the corresponding Starling asset.
 
 h3. Generate the Starling assets
 
-bc. puts "    dynamicAssets.generateStarlingAssets( StageQuality.HIGH );"
+bc. "    dynamicAssets.generateStarlingAssets( StageQuality.HIGH );"
 
 You should only do this once. If you add lots of assets it may take a few seconds to run and will block other activity while it does so. When creating the assets you pass a parameter to indicate the render quality you want. A higher quality will take longer to render.
 
@@ -40,24 +40,24 @@ h3. Save the Starling assets to the local storage.
 
 so you don't have to re-create them next time.
 
-bc. puts "    dynamicAssets.saveToCache();"
+bc. "    dynamicAssets.saveToCache();"
 
 h3. The assets are now ready.
 
 Call the same function you used as a listener for the loadComplete signal to start using the assets.
 
-bc. puts "    assets1Ready();"
-puts "}"
+bc. "    assets1Ready();"
+"}"
 
 h3. To use the assets
 
 Fetch the Starling assets by name from the Fruitfly instance
 
-bc. puts "private function assets1Ready() : void"
-puts "{"
-puts "    var background : Image = dynamicAssets.getImage( "background" );"
-puts "    var logo : MovieClip = dynamicAssets.getMovieClip( "logo" );"
-puts "}"
+bc. "private function assets1Ready() : void"
+"{"
+"    var background : Image = dynamicAssets.getImage( "background" );"
+"    var logo : MovieClip = dynamicAssets.getMovieClip( "logo" );"
+"}"
 
 h2. System requirements
 
