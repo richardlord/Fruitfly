@@ -1,0 +1,96 @@
+h1. Fruitfly - dynamic asset management for Starling
+
+Fruitfly is a library for dynamic creation of Starling display objects from native Flash display objects. It enables the creation of MovieClips and Images from Flash DisplayObjects and, when using Adobe Air, the saving and reloading of the resulting Starling assets from local storage.
+
+h2. Why?
+
+Most Starling development uses pre-rendered bitmap assets, usually as spritesheets. These assets have to be created for specific screen resolutions and this loses one of the benefits of Flash - resolution independent vector graphics. Resolution independence is particularly useful on mobile platforms where games are displayed full-screen. This library restores that resolution independence by creating the spritesheets at run-time.
+
+h2. How it works
+
+h3. Create an instance of the Fruitfly class
+
+@var dynamicAssets : Fruitfly = new Fruitfly( "assets1" );@
+
+The Fruitfly class takes a single parameter which is this instance's name. The name will be used when saving the Starling assets locally and reloading them so should be unique amongst all your Fruitfly instances.
+
+h3. Attempt to load the assets from the local storage
+
+@dynamicAssets.loadComplete.add( assets1Ready );
+dynamicAssets.loadFailed.add( createAssets1 );
+dynamicAssets.loadFromCache();@
+
+h3. If the load fails, load the Fruitfly up with the original Flash assets
+
+@private function createAssets1() : void
+{
+    dynamicAssets.addDisplayObject( "background", new Scene1Background(), 1 );
+    dynamicAssets.addMovieClip( "logo", new AnimatedLogo(), 1 );
+    // ...@
+
+You can add as many Flash assets as you wish. The corresponding Starling assets will be retrieved by the names specified here. The last parameter is a scale to apply to the Flash asset when creating the corresponding Starling asset.
+
+h3. Generate the Starling assets
+
+@    dynamicAssets.generateStarlingAssets( StageQuality.HIGH );@
+
+You should only do this once. If you add lots of assets it may take a few seconds to run and will block other activity while it does so. When creating the assets you pass a parameter to indicate the render quality you want. A higher quality will take longer to render.
+
+h3. Save the Starling assets to the local storage.
+
+so you don't have to re-create them next time.
+
+@    dynamicAssets.saveToCache();@
+
+h3. The assets are now ready.
+
+Call the same function you used as a listener for the loadComplete signal to start using the assets.
+
+@    assets1Ready();
+}@
+
+h3. To use the assets
+
+Fetch the Starling assets by name from the Fruitfly instance
+
+@private function assets1Ready() : void
+{
+    var background : Image = dynamicAssets.getImage( "background" );
+    var logo : MovieClip = dynamicAssets.getMovieClip( "logo" );
+}@
+
+h2. System requirements
+
+Fruitfly requires Adobe Air 3.3 or later. The dynamic asset creation will also work in Flash 11.3 or later but the saving and loading of the created assets requires Air.
+
+h2. Why is it called Fruitfly?
+
+Because, according to Wikipedia, Starlings eat fruit and insects.
+
+h2. Why doesn't Fruitfly do...?
+
+This library was created specifically to cater to my immediate needs. There are likely many features that could usefully be added, and I know there are a number of possible optimisations that I haven't got around to yet. If there are features you need, please fork the project and add them. I will be happy to pull improvements back into this repository.
+
+h2. Where are the unit tests?
+
+Yes, I confess that Fruitfly has no unit tests. I'm not sure how best to unit test a project where the sole purpose is to create graphical assets - most graphics are best tested by looking at them. To this end the example project creates Starling assets and displays them alongside the original Flash assets for comparison.
+
+I would welcome input into the best way to unit test the project.
+
+h2. Where is the example?
+
+In the example directory of the project. It uses a couple of assets from a game I made many years ago. Please don't use these assets in your own projects.
+
+h2. License
+
+Author: Richard Lord
+Copyright (c) Richard Lord 2012
+http://www.richardlord.net
+
+Licence Agreement (The MIT License)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
