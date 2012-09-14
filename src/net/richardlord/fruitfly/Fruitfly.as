@@ -2,6 +2,7 @@ package net.richardlord.fruitfly
 {
 	import net.richardlord.signals.Signal0;
 
+	import starling.display.Button;
 	import starling.display.Image;
 	import starling.display.MovieClip;
 	import starling.textures.Texture;
@@ -11,6 +12,7 @@ package net.richardlord.fruitfly
 	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
 	import flash.display.PNGEncoderOptions;
+	import flash.display.SimpleButton;
 	import flash.filesystem.File;
 	import flash.filesystem.FileMode;
 	import flash.filesystem.FileStream;
@@ -34,9 +36,11 @@ package net.richardlord.fruitfly
 		private var _name : String;
 		
 		private var flashDisplayObjects : Object = {};
+		private var flashButtons : Object = {};
 		private var flashMovieClips : Object = {};
 		
 		private var starlingImages : Object = {};
+		private var starlingButtons : Object = {};
 		private var starlingMovieClips : Object = {};
 		
 		private var collection : TextureAtlasCollection;
@@ -311,6 +315,16 @@ package net.richardlord.fruitfly
 		}
 
 		/**
+		 * Get a Starling Button object. This will have been created from a Flash SimpleButton.
+		 * 
+		 * @param name The name of the Button.
+		 */
+		public function getButton( name : String ) : Button
+		{
+			return starlingButtons[ name ];
+		}
+
+		/**
 		 * Get a Starling MovieClip object. This will have been created from a Flash MovieClip.
 		 * 
 		 * @param name The name of the MovieClip.
@@ -334,6 +348,22 @@ package net.richardlord.fruitfly
 				throw new Error( "An object with that name already exists - " + name );
 			}
 			flashDisplayObjects[name] = new FlashDisplayObject( obj, scale );
+		}
+		
+		/**
+		 * Add a Flash SimpleButton to this FruitFly. This will be converted to a Starling Button object.
+		 * 
+		 * @param name The name of the resulting Starling Button object.
+		 * @param obj The Flash SimpleButton to add.
+		 * @param scale The scale factor to use when creating the Starling Button object. The default is 1.
+		 */
+		public function addButton( name : String, button : SimpleButton, scale : Number = 1 ) : void
+		{
+			if( flashButtons[name] )
+			{
+				throw new Error( "An object with that name already exists - " + name );
+			}
+			flashButtons[name] = new FlashButton( button, scale );
 		}
 		
 		/**
@@ -366,8 +396,10 @@ package net.richardlord.fruitfly
 			collection = new TextureAtlasCollection();
 			var frames : Vector.<TextureAtlasItem>;
 			var frame : TextureAtlasItem;
+			var other : TextureAtlasItem;
 			var clip : FlashMovieClip;
 			var obj : FlashDisplayObject;
+			var btn : FlashButton;
 			var name : String;
 			for( name in flashMovieClips )
 			{
@@ -381,8 +413,17 @@ package net.richardlord.fruitfly
 			for( name in flashDisplayObjects )
 			{
 				obj = flashDisplayObjects[ name ];
-				obj.frame = frame = creator.convertDisplayObjectToBitmap( name, obj.object, obj.scale, quality );
-				collection.addItem( frame );
+				obj.frame = creator.convertDisplayObjectToBitmap( name, obj.object, obj.scale, quality );
+				collection.addItem( obj.frame );
+			}
+			for( name in flashButtons )
+			{
+				btn = flashButtons[ name ];
+				var btnFrames : Vector.<TextureAtlasItem> = creator.convertButtonToBitmaps( name, btn.button, btn.scale, quality );
+				btn.upFrame = btnFrames[0];
+				collection.addItem( btn.upFrame );
+				btn.downFrame = btnFrames[1];
+				collection.addItem( btn.downFrame );
 			}
 			collection.generateAtlas( generateMipMaps );
 
@@ -415,6 +456,15 @@ package net.richardlord.fruitfly
 				image.pivotX = frame.origin.x;
 				image.pivotY = frame.origin.y;
 				starlingImages[ name ] = image;
+			}
+			for( name in flashButtons )
+			{
+				frame = flashButtons[ name ].upFrame;
+				other = flashButtons[ name ].downFrame;
+				var button : Button = new Button( frame.texture, "", other.texture );
+				button.pivotX = frame.origin.x;
+				button.pivotY = frame.origin.y;
+				starlingButtons[ name ] = button;
 			}
 		}
 	}

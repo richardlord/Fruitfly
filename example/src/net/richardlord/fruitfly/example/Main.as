@@ -8,7 +8,7 @@ net.richardlord.fruitfly.example{
 	import flash.display.StageScaleMode;
 	import flash.events.Event;
 
-	[SWF(width='550', height='400', frameRate='30', backgroundColor='#FFFFFF')]
+	[SWF(width='650', height='400', frameRate='30', backgroundColor='#999999')]
 
 	public class Main extends Sprite
 	{

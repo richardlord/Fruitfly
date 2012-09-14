@@ -25,6 +25,7 @@ h4. If the load fails, load the Fruitfly up with the original Flash assets
 bc. private function createAssets1() : void
 {
     dynamicAssets.addDisplayObject( "background", new Scene1Background(), 1 );
+    dynamicAssets.addButton( "playBtn", new PlayBtn(), 1 );
     dynamicAssets.addMovieClip( "logo", new AnimatedLogo(), 1 );
     // ...
 
@@ -56,6 +57,7 @@ Fetch the Starling assets by name from the Fruitfly instance
 bc. private function assets1Ready() : void
 {
     var background : Image = dynamicAssets.getImage( "background" );
+    var playBtn : Button = dynamicAssets.getButton( "playBtn" );
     var logo : MovieClip = dynamicAssets.getMovieClip( "logo" );
 }
 

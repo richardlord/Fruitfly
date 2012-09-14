@@ -1,9 +1,10 @@
 package net.richardlord.fruitfly
 {
-	import flash.display.StageQuality;
 	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
+	import flash.display.SimpleButton;
+	import flash.display.StageQuality;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
@@ -97,6 +98,69 @@ package net.richardlord.fruitfly
 				item.origin = new Point( -maxBounds.x, -maxBounds.y );
 				frames.push( item );
 			}
+			return frames;
+		}
+
+		public function convertButtonToBitmaps( name : String, button : SimpleButton, scale : Number = 1, quality : String = StageQuality.BEST ) : Vector.<TextureAtlasItem>
+		{
+			transform.a = scale;
+			transform.d = scale;
+			transform.tx = 0;
+			transform.ty = 0;
+			
+			var bounds : Rectangle;
+			var item : TextureAtlasItem;
+			var bitmapData : BitmapData;
+			var w : int;
+			var h : int;
+			var x : Number;
+			var y : Number;
+			var absScale : Number = scale < 0 ? -scale : scale;
+
+			var frames : Vector.<TextureAtlasItem> = new Vector.<TextureAtlasItem>();
+			var maxBounds : Rectangle = button.upState.getBounds( button );
+			bounds = button.downState.getBounds( button );
+			maxBounds = maxBounds.union( bounds );
+			maxBounds.x *= absScale;
+			maxBounds.y *= absScale;
+			maxBounds.width *= absScale;
+			maxBounds.height *= absScale;
+			roundOutRect( maxBounds );
+
+			bounds = roundOutRect( scaleRect( button.upState.getBounds( button.upState ), absScale ) );
+			w = bounds.width;
+			h = bounds.height;
+			bitmapData = new BitmapData( w, h, true, 0 );
+			x = -bounds.left;
+			y = -bounds.top;
+			transform.tx = x;
+			transform.ty = y;
+			bitmapData.drawWithQuality( button.upState, transform, null, null, null, true, quality );
+			item = new TextureAtlasItem( name + "_up", bitmapData );
+			item.frame = maxBounds.clone();
+			item.frame.offset( x, y );
+			item.origin = new Point( -maxBounds.x, -maxBounds.y );
+			frames.push( item );
+			
+			bounds = roundOutRect( scaleRect( button.downState.getBounds( button.downState ), absScale ) );
+			w = bounds.width;
+			h = bounds.height;
+			bitmapData = new BitmapData( w, h, true, 0 );
+			x = -bounds.left;
+			y = -bounds.top;
+			transform.tx = x;
+			transform.ty = y;
+			bitmapData.drawWithQuality( button.downState, transform, null, null, null, true, quality );
+			if ( compareData( bitmapData, item.bitmap ) )
+			{
+				bitmapData = item.bitmap;
+			}
+			item = new TextureAtlasItem( name + "_down", bitmapData );
+			item.frame = maxBounds.clone();
+			item.frame.offset( x, y );
+			item.origin = new Point( -maxBounds.x, -maxBounds.y );
+			frames.push( item );
+			
 			return frames;
 		}
 
