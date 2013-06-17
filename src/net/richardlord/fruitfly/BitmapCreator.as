@@ -22,7 +22,6 @@ package net.richardlord.fruitfly
 			var w : int = Math.abs( Math.ceil( bounds.width * scale ) );
 			var h : int = Math.abs( Math.ceil( bounds.height * scale ) );
 			var bitmapData : BitmapData = new BitmapData( w, h, true, 0 );
-			//var absScale : Number = scale < 0 ? -scale : scale;
 			var x : Number = scale > 0 ? -bounds.left * scale : -bounds.right * scale;
 			var y : Number = scale > 0 ? -bounds.top * scale : -bounds.bottom * scale;
 			transform.a = scale;
