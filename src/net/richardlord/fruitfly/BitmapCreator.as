@@ -22,9 +22,8 @@ package net.richardlord.fruitfly
 			var w : int = Math.abs( Math.ceil( bounds.width * scale ) );
 			var h : int = Math.abs( Math.ceil( bounds.height * scale ) );
 			var bitmapData : BitmapData = new BitmapData( w, h, true, 0 );
-			var absScale : Number = scale < 0 ? -scale : scale;
-			var x : Number = -bounds.left * absScale;
-			var y : Number = -bounds.top * absScale;
+			var x : Number = scale > 0 ? -bounds.left * scale : -bounds.right * scale;
+			var y : Number = scale > 0 ? -bounds.top * scale : -bounds.bottom * scale;
 			transform.a = scale;
 			transform.d = scale;
 			transform.tx = x;
@@ -74,8 +73,8 @@ package net.richardlord.fruitfly
 				w = bounds.width;
 				h = bounds.height;
 				bitmapData = new BitmapData( w, h, true, 0 );
-				x = -bounds.left;
-				y = -bounds.top;
+				x = scale > 0 ? -bounds.left : bounds.right;
+				y = scale > 0 ? -bounds.top : bounds.bottom; 
 				transform.tx = x;
 				transform.ty = y;
 				bitmapData.drawWithQuality( clip, transform, null, null, null, true, quality );
@@ -131,8 +130,8 @@ package net.richardlord.fruitfly
 			w = bounds.width;
 			h = bounds.height;
 			bitmapData = new BitmapData( w, h, true, 0 );
-			x = -bounds.left;
-			y = -bounds.top;
+			x = scale > 0 ? -bounds.left : bounds.right;
+			y = scale > 0 ? -bounds.top : bounds.bottom; 
 			transform.tx = x;
 			transform.ty = y;
 			bitmapData.drawWithQuality( button.upState, transform, null, null, null, true, quality );
@@ -146,8 +145,8 @@ package net.richardlord.fruitfly
 			w = bounds.width;
 			h = bounds.height;
 			bitmapData = new BitmapData( w, h, true, 0 );
-			x = -bounds.left;
-			y = -bounds.top;
+			x = scale > 0 ? -bounds.left : bounds.right;
+			y = scale > 0 ? -bounds.top : bounds.bottom; 
 			transform.tx = x;
 			transform.ty = y;
 			bitmapData.drawWithQuality( button.downState, transform, null, null, null, true, quality );
