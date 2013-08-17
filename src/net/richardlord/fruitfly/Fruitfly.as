@@ -446,7 +446,7 @@ package net.richardlord.fruitfly
 				}
 				else
 				{
-					starlingMovieClips[ name ] = new starling.display.MovieClip( new <Texture>[Texture.empty()], clip.fps );
+					starlingMovieClips[ name ] = new starling.display.MovieClip( new <Texture>[Texture.empty(1,1)], clip.fps );
 				}
 			}
 			for( name in flashDisplayObjects )
