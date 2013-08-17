@@ -47,7 +47,7 @@ package net.richardlord.fruitfly
 			items.splice( i, 0, item );
 		}
 		
-		public function generateAtlas( generateMipMaps : Boolean ) : void
+		public function generateAtlas( generateMipMaps : Boolean, bitmapPadding : int ) : void
 		{
 			var minSide : int = getNextPowerOfTwo( Math.ceil( Math.sqrt( area ) ) );
 			var width : int = minSide;
@@ -96,7 +96,7 @@ package net.richardlord.fruitfly
 			}
 			
 			textureNodes = new Vector.<TextureNode>();
-			var root : SubTextureNode = new TextureNode();
+			var root : SubTextureNode = new TextureNode( bitmapPadding );
 			textureNodes.push( root );
 			root.rect = new Rectangle( 0, 0, width, height );
 			var rect : Rectangle;
@@ -106,10 +106,10 @@ package net.richardlord.fruitfly
 				rect = root.insert( item );
 				while( !rect )
 				{
-					var newNode : TextureNode = new TextureNode();
+					var newNode : TextureNode = new TextureNode( bitmapPadding );
 					newNode.rect = new Rectangle( 0, 0, width, height );
 					textureNodes.push( newNode );
-					var newRoot : SubTextureNode = new SubTextureNode();
+					var newRoot : SubTextureNode = new SubTextureNode( bitmapPadding );
 					newRoot.left = root;
 					newRoot.right = newNode;
 					root = newRoot;

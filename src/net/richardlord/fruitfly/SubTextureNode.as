@@ -12,9 +12,20 @@ package net.richardlord.fruitfly
 		public var rect : Rectangle;
 		public var image : TextureAtlasItem;
 		
+		private var padding : int = 1;
+		
+		public function SubTextureNode( padding : int )
+		{
+			this.padding = padding;
+		}
+		
 		public function insert( item : TextureAtlasItem ) : Rectangle
 		{
 			var newRect : Rectangle;
+			
+			var widthWithPadding : int = item.bitmap.width + padding;
+			var heightWithPadding : int = item.bitmap.height + padding;
+			
 			if( image )
 			{
 				return null;
@@ -31,28 +42,28 @@ package net.richardlord.fruitfly
 					return right.insert( item );
 				}
 			}
-			if( rect.width < item.bitmap.width || rect.height < item.bitmap.height )
+			if( rect.width < widthWithPadding || rect.height < heightWithPadding )
 			{
 				return null;
 			}
-			if( rect.width == item.bitmap.width && rect.height == item.bitmap.height )
+			if( rect.width == widthWithPadding && rect.height == heightWithPadding )
 			{
 				image = item;
 				item.region = rect;
 				return rect;
 			}
-			left = new SubTextureNode();
-			right = new SubTextureNode();
+			left = new SubTextureNode( padding );
+			right = new SubTextureNode( padding );
 			
-			if( rect.height == item.bitmap.height )
+			if( rect.height == heightWithPadding )
 			{
-				left.rect = new Rectangle( rect.x, rect.y, item.bitmap.width, rect.height );
-				right.rect = new Rectangle( rect.x + item.bitmap.width, rect.y, rect.width - item.bitmap.width, rect.height );
+				left.rect = new Rectangle( rect.x, rect.y, widthWithPadding, rect.height );
+				right.rect = new Rectangle( rect.x + widthWithPadding, rect.y, rect.width - widthWithPadding, rect.height );
 			}
 			else
 			{
-				left.rect = new Rectangle( rect.x, rect.y, rect.width, item.bitmap.height );
-				right.rect = new Rectangle( rect.x, rect.y + item.bitmap.height, rect.width, rect.height - item.bitmap.height );
+				left.rect = new Rectangle( rect.x, rect.y, rect.width, heightWithPadding );
+				right.rect = new Rectangle( rect.x, rect.y + heightWithPadding, rect.width, rect.height - heightWithPadding );
 			}
 			return left.insert( item );
 		}

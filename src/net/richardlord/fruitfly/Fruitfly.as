@@ -65,6 +65,12 @@ package net.richardlord.fruitfly
 		 * Indicates whether mip-map textures should be created or not. The default is false.
 		 */
 		public var generateMipMaps : Boolean;
+		/**
+		 * Adds padding between the bitmaps in the texture atlas. For some reason (possibly related 
+		 * to using anti-aliasing in Starling) bitmaps sometimes blead into neighbouring assets when
+		 * using the texture atlas. This can help fix that. The default value of 1 is usually fine.
+		 */
+		public var bitmapPadding : int = 1;
 		
 		/**
 		 * Constructor.
@@ -425,7 +431,7 @@ package net.richardlord.fruitfly
 				btn.downFrame = btnFrames[1];
 				collection.addItem( btn.downFrame );
 			}
-			collection.generateAtlas( generateMipMaps );
+			collection.generateAtlas( generateMipMaps, bitmapPadding );
 
 			for( name in flashMovieClips )
 			{

@@ -21,6 +21,11 @@ package net.richardlord.fruitfly
 		public var atlas : TextureAtlas;
 		public var map : XML;
 		
+		public function TextureNode( padding : int )
+		{
+			super( padding );
+		}
+		
 		override public function insert( item : TextureAtlasItem ) : Rectangle
 		{
 			var returnRect : Rectangle = super.insert( item );
