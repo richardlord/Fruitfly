@@ -1,13 +1,5 @@
 package net.richardlord.fruitfly
 {
-	import net.richardlord.signals.Signal0;
-
-	import starling.display.Button;
-	import starling.display.Image;
-	import starling.display.MovieClip;
-	import starling.textures.Texture;
-	import starling.textures.TextureAtlas;
-
 	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
@@ -17,6 +9,14 @@ package net.richardlord.fruitfly
 	import flash.filesystem.FileMode;
 	import flash.filesystem.FileStream;
 	import flash.utils.ByteArray;
+	
+	import net.richardlord.signals.Signal0;
+	
+	import starling.display.Button;
+	import starling.display.Image;
+	import starling.display.MovieClip;
+	import starling.textures.Texture;
+	import starling.textures.TextureAtlas;
 	
 	/**
 	 * A FruitFly instance converts Flash display assets to Starling display assets.
@@ -31,6 +31,10 @@ package net.richardlord.fruitfly
 	 */
 	public class Fruitfly
 	{
+		public static const TYPE_IMAGE:String = "img";
+		public static const TYPE_BUTTON:String = "btn";
+		public  static const TYPE_MOVIECLIP:String = "mc";
+		
 		private static const defaultStorageDirectory : String = "fruitfly";
 		
 		private var _name : String;
@@ -310,6 +314,13 @@ package net.richardlord.fruitfly
 			stream.writeUTFBytes( master.toXMLString() );
 		}
 		
+		
+		
+		
+		
+		
+		
+		
 		/**
 		 * Get a Starling Image object. This will have been created from a static Flash DisplayObject.
 		 * 
@@ -339,6 +350,59 @@ package net.richardlord.fruitfly
 		{
 			return starlingMovieClips[ name ];
 		}
+		
+		
+		
+		
+		
+		/**
+		 * Returns the number of children of a specific type the sheet includes.
+		 * 
+		 * @param type : The type of starling children you wanna get a count of.
+		 * 				 Giving no parameters assumes you want to output the count of 
+		 * 				 all the children, regardless of their type.
+		 * 				Known types: 
+		 * 						Fruitfly.TYPE_BUTTON
+		 * 						Fruitfly.TYPE_IMAGE
+		 * 						Fruitfly.TYPE_MOVIECLIP
+		 */
+		public function getChildCnt( type:String = "all" ):int
+		{
+			var name:String;
+			var count:uint = 0;
+			
+				
+			switch (type)
+			{
+			
+				case "img"	:
+					for( name in starlingImages )
+						count++;
+					break;
+				case "btn"	:
+					for( name in starlingButtons )
+						count++;
+					break;
+				case "mc"	:
+					for( name in starlingMovieClips )
+						count++;
+					break;
+				default		:
+					for( name in starlingImages )
+						count++;
+					for( name in starlingButtons )
+						count++;
+					for( name in starlingMovieClips )
+						count++;
+					break;
+			}
+			
+			return count;
+		}
+		
+		
+		
+		
 		
 		/**
 		 * Add a Flash DisplayObject to this FruitFly. This will be converted to a Starling Image object.
